@@ -46,7 +46,7 @@ jobs:
         shell: pwsh
         run: |
           if (Test-Path tests) {
-            pytest -q
+            python -m pytest -q
           } else {
             Write-Host "No tests folder found. Skipping pytest."
           }

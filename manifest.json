@@ -1,0 +1,31 @@
+{
+    "hrcomNumber": "NA",
+    "spId": "NA",
+    "author": "Manifest-Code-Generator",
+    "comments": "Python-Generated-JSON",
+    "components": {
+        "db":{
+            "scripts" :[
+                {
+                    "script": "CREATE_TABLE_EMPLOYEE.sql",
+                    "schema": "aidevops_agent"
+                }
+            ]
+        },
+        "oic": {
+            "projects": [
+                {
+                    "id": "TEST_DP",
+                    "filename": "TEST_DP.car"
+                }
+            ],
+            "integrations": [
+                {
+                "id": "TEST_MCP_DP",
+                "version": "01.00.0000"
+                }
+            ]
+        }
+    }
+}
+                

@@ -1,11 +1,52 @@
-- name: Install validation dependencies
-  run: python -m pip install -r requirements-dev.txt
+name: Oracle Automation CI
 
-- name: Critical lint checks
-  run: ruff check . --select E9,F63,F7,F82
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
 
-- name: Validate Oracle repository
-  run: python scripts/ci/validate_oracle_repo.py
+permissions:
+  contents: read
+  actions: read
 
-- name: Run tests
-  run: pytest -q
+jobs:
+  validate:
+    name: validate-oracle-automation
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install validation dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements-dev.txt
+
+      - name: Python syntax check
+        run: |
+          python -m compileall scripts
+
+      - name: Critical lint checks
+        run: |
+          ruff check . --select E9,F63,F7,F82
+
+      - name: Validate Oracle deployment metadata
+        run: |
+          python scripts/ci/validate_oracle_repo.py
+
+      - name: Run tests if present
+        shell: pwsh
+        run: |
+          if (Test-Path tests) {
+            pytest -q
+          } else {
+            Write-Host "No tests folder found. Skipping pytest."
+          }

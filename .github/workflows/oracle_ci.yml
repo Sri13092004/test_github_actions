@@ -1,8 +1,6 @@
-name: Oracle Automation CI
+name: Oracle Automation CI/CD
 
 on:
-  pull_request:
-    branches: [main]
   push:
     branches: [main]
   workflow_dispatch:
@@ -12,9 +10,20 @@ permissions:
   actions: read
 
 jobs:
+  approval_gate:
+    name: Approval Before Pipeline Execution
+    runs-on: ubuntu-latest
+    environment:
+      name: test
+
+    steps:
+      - name: Approved
+        run: echo "Pipeline execution approved."
+
   validate:
-    name: validate-oracle-automation
+    name: Validate Oracle Repo
     runs-on: windows-latest
+    needs: approval_gate
 
     steps:
       - name: Checkout repository
@@ -30,23 +39,28 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements-dev.txt
 
-      - name: Python syntax check
-        run: |
-          python -m compileall scripts
-
       - name: Critical lint checks
         run: |
           ruff check . --select E9,F63,F7,F82
 
-      - name: Validate Oracle deployment metadata
+      - name: Validate Oracle repository
         run: |
           python scripts/ci/validate_oracle_repo.py
 
-      - name: Run tests if present
-        shell: pwsh
+      - name: Validate access guardrails
         run: |
-          if (Test-Path tests) {
-            python -m pytest -q
-          } else {
-            Write-Host "No tests folder found. Skipping pytest."
-          }
+          python scripts/ci/validate_pipeline_access.py
+
+      - name: Run tests
+        run: |
+          pytest -q
+
+  deploy:
+    name: Deployment Placeholder
+    runs-on: windows-latest
+    needs: validate
+    if: success()
+
+    steps:
+      - name: Deployment ready
+        run: echo "Validation passed. Deployment can proceed."

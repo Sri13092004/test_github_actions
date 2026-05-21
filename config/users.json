@@ -1,10 +1,10 @@
 {
   "users": [
     {
-      "username": "srividhya",
+      "username": "Sri13092004",
       "role": "release_manager",
       "allowed_environments": ["dev", "test", "prod"],
-      "allowed_actions": ["deploy_oic", "deploy_db", "commit", "push"]
+      "allowed_actions": ["deploy_oic", "deploy_db", "commit", "push","approve_pipeline"]
     },
     {
       "username": "developer1",

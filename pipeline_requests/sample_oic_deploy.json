@@ -1,0 +1,10 @@
+{
+  "requested_by": "Sri13092004",
+  "action": "deploy_oic",
+  "environment": "dev",
+  "component": {
+    "type": "oic_project",
+    "id": "TEST_DP",
+    "filename": "TEST_DP.car"
+  }
+}

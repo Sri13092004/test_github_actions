@@ -1,0 +1,22 @@
+{
+  "users": [
+    {
+      "username": "srividhya",
+      "role": "release_manager",
+      "allowed_environments": ["dev", "test", "prod"],
+      "allowed_actions": ["deploy_oic", "deploy_db", "commit", "push"]
+    },
+    {
+      "username": "developer1",
+      "role": "developer",
+      "allowed_environments": ["dev", "test"],
+      "allowed_actions": ["deploy_oic", "deploy_db", "commit"]
+    },
+    {
+      "username": "viewer1",
+      "role": "viewer",
+      "allowed_environments": ["dev"],
+      "allowed_actions": ["view_status"]
+    }
+  ]
+}
